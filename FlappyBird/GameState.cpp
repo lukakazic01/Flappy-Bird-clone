@@ -8,9 +8,11 @@ namespace LukaGame {
     GameState::GameState(GameDataRef ref): _data(ref) {}
 
     void GameState::Init() {
+        _data->assets.LoadTexture("Land", LAND_FILEPATH);
         _data->assets.LoadTexture("Pipe Up", PIPE_UP_FILEPATH);
         _data->assets.LoadTexture("Pipe Down", PIPE_DOWN_FILEPATH);
         pipe = new Pipe(_data);
+        land = new Land(_data);
         _data->assets.LoadTexture("Game Background", GAME_BACKGROUND_FILEPATH);
         _background.emplace(_data->assets.GetTexture("Game Background"));
         pipe->SpawnTopPipe();
@@ -32,6 +34,7 @@ namespace LukaGame {
             _clock.restart();
         }
         pipe->MovePipes(dt);
+        land->MoveLand(dt);
     }
 
     void GameState::Draw(float dt) {
@@ -39,6 +42,7 @@ namespace LukaGame {
         if (_background.has_value()) {
             _data->window.draw(*_background);
             pipe->DrawPipes();
+            land->DrawLand();
         }
         _data->window.display();
     }
