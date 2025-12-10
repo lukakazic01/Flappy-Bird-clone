@@ -29,6 +29,7 @@ namespace LukaGame {
 
     void GameState::Update(float dt) {
         if (_clock.getElapsedTime().asSeconds() > PIPE_SPAWN_FREQUENCY) {
+            pipe->GenerateRandomNumber();
             pipe->SpawnTopPipe();
             pipe->SpawnBottomPipe();
             _clock.restart();

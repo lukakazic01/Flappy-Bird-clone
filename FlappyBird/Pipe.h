@@ -14,8 +14,11 @@ namespace LukaGame {
             void SpanwInvisiblePipe();
             void MovePipes(float dt);
             void DrawPipes();
+            void GenerateRandomNumber();
         private:
             GameDataRef _data;
             std::vector<sf::Sprite> pipeSprites;
+            int _pipeSpawnOffset = 0;
+            int _landHeight;
     };
 }
