@@ -5,6 +5,8 @@
 #include "Game.h"
 #include "Pipe.h"
 #include "Land.h"
+#include "Bird.h"
+#include "Collision.h"
 
 namespace LukaGame {
     class GameState : public State {
@@ -21,6 +23,9 @@ namespace LukaGame {
             std::optional<sf::Sprite> _background;
             Pipe *pipe;
             Land *land;
+            Bird *bird;
+            Collision collision;	
             sf::Clock _clock;
+            int _gameState;
     };
 }

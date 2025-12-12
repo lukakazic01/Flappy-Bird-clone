@@ -3,6 +3,7 @@
 #include "GameState.h"
 #include "Pipe.h"
 #include "DEFINITIONS.h"
+#include "Collision.h"
 
 namespace LukaGame {
     GameState::GameState(GameDataRef ref): _data(ref) {}
@@ -11,12 +12,16 @@ namespace LukaGame {
         _data->assets.LoadTexture("Land", LAND_FILEPATH);
         _data->assets.LoadTexture("Pipe Up", PIPE_UP_FILEPATH);
         _data->assets.LoadTexture("Pipe Down", PIPE_DOWN_FILEPATH);
+        _data->assets.LoadTexture("Game Background", GAME_BACKGROUND_FILEPATH);
+        _data->assets.LoadTexture("Bird Frame 1", BIRD_FRAME_1_FILEPATH);
+        _data->assets.LoadTexture("Bird Frame 2", BIRD_FRAME_2_FILEPATH);
+        _data->assets.LoadTexture("Bird Frame 3", BIRD_FRAME_3_FILEPATH);
+        _data->assets.LoadTexture("Bird Frame 4", BIRD_FRAME_4_FILEPATH);
+        _background.emplace(_data->assets.GetTexture("Game Background"));
         pipe = new Pipe(_data);
         land = new Land(_data);
-        _data->assets.LoadTexture("Game Background", GAME_BACKGROUND_FILEPATH);
-        _background.emplace(_data->assets.GetTexture("Game Background"));
-        pipe->SpawnTopPipe();
-        pipe->SpawnBottomPipe();
+        bird = new Bird(_data);
+        _gameState = GameStates::eReady;
     }
 
     void GameState::HandleInput() {
@@ -24,18 +29,35 @@ namespace LukaGame {
             if (event->is<sf::Event::Closed>()) {
                 _data->window.close();
             }
+            if (_data->input.isSpriteClicked(*_background, sf::Mouse::Button::Left, _data->window)) {
+                if (GameStates::eGameOver != _gameState) {
+                    _gameState = GameStates::ePlaying;
+                    bird->Tap();
+                }
+            }
         }
     }
 
     void GameState::Update(float dt) {
-        if (_clock.getElapsedTime().asSeconds() > PIPE_SPAWN_FREQUENCY) {
-            pipe->GenerateRandomNumber();
-            pipe->SpawnTopPipe();
-            pipe->SpawnBottomPipe();
-            _clock.restart();
+        if (GameStates::eGameOver != _gameState) {
+            bird->Animate(dt);
+            land->MoveLand(dt);
         }
-        pipe->MovePipes(dt);
-        land->MoveLand(dt);
+        if (GameStates::ePlaying == _gameState) {
+            if (_clock.getElapsedTime().asSeconds() > PIPE_SPAWN_FREQUENCY) {
+                pipe->GeneratePosition();
+                pipe->SpawnTopPipe();
+                pipe->SpawnBottomPipe();
+                _clock.restart();
+            }
+            pipe->MovePipes(dt);
+            bird->Update(dt);
+            for(unsigned short int i = 0; i < land->GetSprites().size(); i++) {
+                if (collision.CheckSpriteCollsion(bird->GetSprite(), land->GetSprites().at(i))) {
+                    _gameState = GameStates::eGameOver;
+                }
+            }
+        }
     }
 
     void GameState::Draw(float dt) {
@@ -44,7 +66,14 @@ namespace LukaGame {
             _data->window.draw(*_background);
             pipe->DrawPipes();
             land->DrawLand();
+            bird->Draw();
         }
         _data->window.display();
+    }
+
+    GameState::~GameState() {
+        delete pipe;
+        delete bird;
+        delete land;
     }
 }

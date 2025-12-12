@@ -27,4 +27,8 @@ namespace LukaGame {
             _data->window.draw(sprite);
         }
     }
+
+    std::vector<sf::Sprite>& Land::GetSprites() {
+        return _landSprites;
+    }
 }
