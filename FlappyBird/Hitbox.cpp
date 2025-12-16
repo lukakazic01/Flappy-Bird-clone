@@ -14,11 +14,11 @@ namespace LukaGame {
         _hitbox.setOrigin(s.getOrigin());
         _hitbox.setPosition(s.getPosition());
         _hitbox.setRotation(s.getRotation());
-        _hitbox.setScale({ s.getScale().x - 0.3f, s.getScale().y }); // TODO: Not good, this is only for bird case
     }
 
-    void Hitbox::SetHitbox(const sf::Vector2f& size) {
+    void Hitbox::SetHitbox(const sf::Vector2f& size, const sf::Vector2f& scale) {
         _hitbox.setSize(size);
+        _hitbox.setScale(scale);
         _hitbox.setFillColor(sf::Color::White);
     }
 };
