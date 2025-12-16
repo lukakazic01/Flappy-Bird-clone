@@ -13,6 +13,7 @@
 #define FLYING_SPEED 350.0f
 #define FLYING_DURATION 0.35f
 #define ROTATION_SPEED 200.0f
+#define FLASH_SPEED 500.0f
 
 #define SPLASH_SCENE_BACKGROUND_FILEPATH "Splash Background.png"
 #define MAIN_MENU_BACKGROUND_FILEPATH "sky.png"

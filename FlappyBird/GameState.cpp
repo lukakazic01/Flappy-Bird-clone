@@ -18,10 +18,11 @@ namespace LukaGame {
         _data->assets.LoadTexture("Bird Frame 3", BIRD_FRAME_3_FILEPATH);
         _data->assets.LoadTexture("Bird Frame 4", BIRD_FRAME_4_FILEPATH);
         _background.emplace(_data->assets.GetTexture("Game Background"));
+        _gameState = GameStates::eReady;
         pipe = new Pipe(_data);
         land = new Land(_data);
         bird = new Bird(_data);
-        _gameState = GameStates::eReady;
+        flash = new Flash(_data);
     }
 
     void GameState::HandleInput() {
@@ -39,6 +40,9 @@ namespace LukaGame {
     }
 
     void GameState::Update(float dt) {
+        if (GameStates::eGameOver == _gameState) {
+            flash->Show(dt);
+        }
         if (GameStates::eGameOver != _gameState) {
             bird->Animate(dt);
             land->MoveLand(dt);
@@ -71,12 +75,11 @@ namespace LukaGame {
 
     void GameState::Draw(float dt) {
         _data->window.clear();
-        if (_background.has_value()) {
-            _data->window.draw(*_background);
-            pipe->DrawPipes();
-            land->DrawLand();
-            bird->Draw();
-        }
+        _data->window.draw(*_background);
+        pipe->DrawPipes();
+        land->DrawLand();
+        bird->Draw();
+        if (GameStates::eGameOver == _gameState) flash->Draw();
         _data->window.display();
     }
 
@@ -84,5 +87,6 @@ namespace LukaGame {
         delete pipe;
         delete bird;
         delete land;
+        delete flash;
     }
 }

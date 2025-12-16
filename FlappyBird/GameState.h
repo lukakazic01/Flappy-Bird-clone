@@ -7,6 +7,7 @@
 #include "Land.h"
 #include "Bird.h"
 #include "Collision.h"
+#include "Flash.h"
 
 namespace LukaGame {
     class GameState : public State {
@@ -24,7 +25,8 @@ namespace LukaGame {
             Pipe *pipe;
             Land *land;
             Bird *bird;
-            Collision collision;	
+            Flash *flash;
+            Collision collision;
             sf::Clock _clock;
             int _gameState;
     };
