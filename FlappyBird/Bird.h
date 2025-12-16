@@ -4,6 +4,7 @@
 #include <array>
 #include "DEFINITIONS.h"
 #include "Game.h"
+#include "Hitbox.h"
 
 namespace LukaGame {
     class Bird {
@@ -12,10 +13,12 @@ namespace LukaGame {
             void Draw();
             void Animate(float dt);
             sf::Sprite& GetSprite();
-        void Update(float dt);
-        void Tap();
+            sf::RectangleShape& GetHitbox();
+            void Update(float dt);
+            void Tap();
         private:
             GameDataRef _data;
+            Hitbox _birdHitbox;
             std::optional<sf::Sprite> _birdSprite;
             std::array<sf::Texture, 4> _animationFrames;
             sf::Clock _clock;

@@ -53,7 +53,16 @@ namespace LukaGame {
             pipe->MovePipes(dt);
             bird->Update(dt);
             for(unsigned short int i = 0; i < land->GetSprites().size(); i++) {
-                if (collision.CheckSpriteCollsion(bird->GetSprite(), land->GetSprites().at(i))) {
+                std::variant<sf::RectangleShape, sf::Sprite> b = bird->GetHitbox();
+                std::variant<sf::RectangleShape, sf::Sprite> l = land->GetSprites().at(i);
+                if (collision.CheckSpriteCollsion(b, l)) {
+                    _gameState = GameStates::eGameOver;
+                }
+            }
+            for(unsigned short int i = 0; i < pipe->GetSprites().size(); i++) {
+                std::variant<sf::RectangleShape, sf::Sprite> b = bird->GetHitbox();
+                std::variant<sf::RectangleShape, sf::Sprite> p = pipe->GetSprites().at(i);
+                if (collision.CheckSpriteCollsion(b, p)) {
                     _gameState = GameStates::eGameOver;
                 }
             }

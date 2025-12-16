@@ -9,11 +9,13 @@ namespace LukaGame {
         _birdSprite.emplace(_animationFrames.at(0));
         _birdSprite.value().setPosition({ SCREEN_WIDTH / 4, SCREEN_WIDTH / 2 });
         _birdState = BIRD_STATE_STILL;
-        sf::FloatRect bounds = _birdSprite.value().getLocalBounds();
+        sf::FloatRect bounds = _birdSprite.value().getGlobalBounds();
         _birdSprite.value().setOrigin({ bounds.size.x / 2, bounds.size.y / 2 });
+        _birdHitbox.SetHitbox({ _birdSprite.value().getGlobalBounds().size.x, _birdSprite.value().getGlobalBounds().size.y });
     }
 
     void Bird::Draw() {
+        _data->window.draw(_birdHitbox.GetHitbox());
         _data->window.draw(*_birdSprite);
     }
 
@@ -40,7 +42,7 @@ namespace LukaGame {
             _birdSprite.value().move({ 0, -(FLYING_SPEED * dt) });
             _birdSprite.value().setRotation(sf::degrees(_rotation));
         }
-        
+        _birdHitbox.UpdateHitbox(_birdSprite.value());
         if (elapsed > FLYING_DURATION) {
             _birdState = BIRD_STATE_FALLING;
             _movementClock.restart();
@@ -55,5 +57,9 @@ namespace LukaGame {
 
     sf::Sprite& Bird::GetSprite() {
         return _birdSprite.value();
+    }
+
+    sf::RectangleShape& Bird::GetHitbox() {
+        return _birdHitbox.GetHitbox();
     }
 }
