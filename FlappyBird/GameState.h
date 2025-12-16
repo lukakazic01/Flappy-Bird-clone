@@ -14,11 +14,13 @@ namespace LukaGame {
         public:
             GameState(GameDataRef);
             ~GameState();
-            
             void Init();
             void HandleInput();
             void Update(float dt);
             void Draw(float dt);
+            void CheckCollisionWithLand();
+            void CheckCollisionWithPipe();
+            void CheckCollisionWithScoringPipe();
         private:
             GameDataRef _data;
             std::optional<sf::Sprite> _background;
@@ -29,5 +31,6 @@ namespace LukaGame {
             Collision collision;
             sf::Clock _clock;
             int _gameState;
+            int _score;
     };
 }

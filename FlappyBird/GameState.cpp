@@ -52,24 +52,15 @@ namespace LukaGame {
                 pipe->GeneratePosition();
                 pipe->SpawnTopPipe();
                 pipe->SpawnBottomPipe();
+                pipe->SpawnScoringPipe();
                 _clock.restart();
             }
             pipe->MovePipes(dt);
+            pipe->MoveScoringPipes(dt);
             bird->Update(dt);
-            for(unsigned short int i = 0; i < land->GetSprites().size(); i++) {
-                std::variant<sf::RectangleShape, sf::Sprite> b = bird->GetHitbox();
-                std::variant<sf::RectangleShape, sf::Sprite> l = land->GetSprites().at(i);
-                if (collision.CheckSpriteCollsion(b, l)) {
-                    _gameState = GameStates::eGameOver;
-                }
-            }
-            for(unsigned short int i = 0; i < pipe->GetSprites().size(); i++) {
-                std::variant<sf::RectangleShape, sf::Sprite> b = bird->GetHitbox();
-                std::variant<sf::RectangleShape, sf::Sprite> p = pipe->GetSprites().at(i);
-                if (collision.CheckSpriteCollsion(b, p)) {
-                    _gameState = GameStates::eGameOver;
-                }
-            }
+            CheckCollisionWithLand();
+            CheckCollisionWithPipe();
+            CheckCollisionWithScoringPipe();
         }
     }
 
@@ -81,6 +72,40 @@ namespace LukaGame {
         bird->Draw();
         if (GameStates::eGameOver == _gameState) flash->Draw();
         _data->window.display();
+    }
+
+    void GameState::CheckCollisionWithPipe() {
+        std::vector<sf::Sprite>& pipeSprites = pipe->GetSprites();
+        for(unsigned short int i = 0; i < pipeSprites.size(); i++) {
+            std::variant<sf::RectangleShape, sf::Sprite> birdHitbox = bird->GetHitbox();
+            std::variant<sf::RectangleShape, sf::Sprite> pipeSprite = pipeSprites.at(i);
+            if (collision.CheckSpriteCollsion(birdHitbox, pipeSprite)) {
+                _gameState = GameStates::eGameOver;
+            }
+        }
+    }
+
+    void GameState::CheckCollisionWithLand() {
+        std::vector<sf::Sprite>& landSprites = land->GetSprites();
+        for(unsigned short int i = 0; i < landSprites.size(); i++) {
+            std::variant<sf::RectangleShape, sf::Sprite> b = bird->GetHitbox();
+            std::variant<sf::RectangleShape, sf::Sprite> l = landSprites.at(i);
+            if (collision.CheckSpriteCollsion(b, l)) {
+                _gameState = GameStates::eGameOver;
+            }
+        }
+    }
+
+    void GameState::CheckCollisionWithScoringPipe() {
+        std::vector<sf::RectangleShape>& scoringPipes = pipe->GetScoringPipes();
+        for(unsigned short int i = 0; i < scoringPipes.size(); i++) {
+            std::variant<sf::RectangleShape, sf::Sprite> birdHitbox = bird->GetHitbox();
+            std::variant<sf::RectangleShape, sf::Sprite> pipeSprite = scoringPipes.at(i);
+            if (collision.CheckSpriteCollsion(birdHitbox, pipeSprite)) {
+                _score++;
+                scoringPipes.erase(scoringPipes.begin() + i);
+            }
+        }
     }
 
     GameState::~GameState() {

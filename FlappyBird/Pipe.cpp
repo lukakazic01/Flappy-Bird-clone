@@ -39,6 +39,21 @@ namespace LukaGame {
         }
     }
 
+    void Pipe::SpawnScoringPipe() {
+        sf::RectangleShape shape({ _pipeSprites.at(0).getLocalBounds().size.x, (float)_data->window.getSize().y });
+        shape.setFillColor(sf::Color::Transparent);
+        shape.setPosition(sf::Vector2f({ (float)_data->window.getSize().x, 0 }));
+        _scoringPipes.push_back(shape);
+    }
+
+    void Pipe::MoveScoringPipes(float dt) {
+        for(unsigned short int i = 0; i < _scoringPipes.size(); i++) {
+            sf::RectangleShape& pipe = _scoringPipes.at(i);
+            float movement = PIPE_MOVEMENT_SPEED * dt;
+            pipe.move({ -movement, 0 });
+        }
+    }
+
     void Pipe::GeneratePosition() {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -48,5 +63,9 @@ namespace LukaGame {
 
     std::vector<sf::Sprite>& Pipe::GetSprites() {
         return _pipeSprites;
+    }
+
+    std::vector<sf::RectangleShape>& Pipe::GetScoringPipes() {
+        return _scoringPipes;
     }
 }
