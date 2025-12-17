@@ -17,12 +17,16 @@ namespace LukaGame {
         _data->assets.LoadTexture("Bird Frame 2", BIRD_FRAME_2_FILEPATH);
         _data->assets.LoadTexture("Bird Frame 3", BIRD_FRAME_3_FILEPATH);
         _data->assets.LoadTexture("Bird Frame 4", BIRD_FRAME_4_FILEPATH);
+        _data->assets.LoadFont("Flappy Font", FLAPPY_FONT_FILEPATH);
         _background.emplace(_data->assets.GetTexture("Game Background"));
         _gameState = GameStates::eReady;
         pipe = new Pipe(_data);
         land = new Land(_data);
         bird = new Bird(_data);
         flash = new Flash(_data);
+        hud = new Hud(_data);
+        _score = 0;
+        hud->UpdateScore(_score);
     }
 
     void GameState::HandleInput() {
@@ -70,6 +74,7 @@ namespace LukaGame {
         pipe->DrawPipes();
         land->DrawLand();
         bird->Draw();
+        hud->Draw();
         if (GameStates::eGameOver == _gameState) flash->Draw();
         _data->window.display();
     }
@@ -88,9 +93,9 @@ namespace LukaGame {
     void GameState::CheckCollisionWithLand() {
         std::vector<sf::Sprite>& landSprites = land->GetSprites();
         for(unsigned short int i = 0; i < landSprites.size(); i++) {
-            std::variant<sf::RectangleShape, sf::Sprite> b = bird->GetHitbox();
-            std::variant<sf::RectangleShape, sf::Sprite> l = landSprites.at(i);
-            if (collision.CheckSpriteCollsion(b, l)) {
+            std::variant<sf::RectangleShape, sf::Sprite> birdHitbox = bird->GetHitbox();
+            std::variant<sf::RectangleShape, sf::Sprite> landSprite = landSprites.at(i);
+            if (collision.CheckSpriteCollsion(birdHitbox, landSprite)) {
                 _gameState = GameStates::eGameOver;
             }
         }
@@ -103,6 +108,7 @@ namespace LukaGame {
             std::variant<sf::RectangleShape, sf::Sprite> pipeSprite = scoringPipes.at(i);
             if (collision.CheckSpriteCollsion(birdHitbox, pipeSprite)) {
                 _score++;
+                hud->UpdateScore(_score);
                 scoringPipes.erase(scoringPipes.begin() + i);
             }
         }
