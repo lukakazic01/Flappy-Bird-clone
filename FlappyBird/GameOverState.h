@@ -7,7 +7,7 @@
 namespace LukaGame {
     class GameOverState : public State {
         public:
-            GameOverState(GameDataRef);
+            GameOverState(GameDataRef, int score);
             ~GameOverState();
             
             void Init();
@@ -20,5 +20,9 @@ namespace LukaGame {
             std::optional<sf::Sprite> _gameOverTitle;
             std::optional<sf::Sprite> _gameOverContainer;
             std::optional<sf::Sprite> _retryButton;
+            std::optional<sf::Text> _scoreText;
+            std::optional<sf::Text> _highScoreText;
+            int _score;
+            int _highScore;
     };
 }
