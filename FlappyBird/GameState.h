@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "State.h"
 #include "Game.h"
 #include "Pipe.h"
@@ -32,6 +33,12 @@ namespace LukaGame {
             Hud *hud;
             Collision collision;
             sf::Clock _clock;
+            sf::SoundBuffer _hitSoundBuffer;
+            sf::SoundBuffer _wingSoundBuffer;
+            sf::SoundBuffer _pointSoundBuffer;
+            std::optional<sf::Sound> _hitSound;
+            std::optional<sf::Sound> _wingSound;
+            std::optional<sf::Sound> _pointSound;
             int _gameState;
             int _score;
     };

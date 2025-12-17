@@ -1,15 +1,27 @@
-#include <sstream>
-#include <iostream>
 #include "GameState.h"
 #include "Pipe.h"
 #include "DEFINITIONS.h"
 #include "Collision.h"
 #include "GameOverState.h"
 
+#include <iostream>
+
 namespace LukaGame {
     GameState::GameState(GameDataRef ref): _data(ref) {}
 
     void GameState::Init() {
+        if (!_hitSoundBuffer.loadFromFile(HIT_SOUND_FILEPATH)) {
+            std::cout << "Error loading Hit sound effect" << std::endl;
+        }
+        if (!_wingSoundBuffer.loadFromFile(WING_SOUND_FILEPATH)) {
+            std::cout << "Error loading Wing sound effect" << std::endl;
+        }
+        if (!_pointSoundBuffer.loadFromFile(POINT_SOUND_FILEPATH)) {
+            std::cout << "Error loading Point sound effect" << std::endl;
+        }
+        _hitSound.emplace(_hitSoundBuffer);
+        _wingSound.emplace(_wingSoundBuffer);
+        _pointSound.emplace(_pointSoundBuffer);
         _data->assets.LoadTexture("Land", LAND_FILEPATH);
         _data->assets.LoadTexture("Pipe Up", PIPE_UP_FILEPATH);
         _data->assets.LoadTexture("Pipe Down", PIPE_DOWN_FILEPATH);
@@ -39,6 +51,7 @@ namespace LukaGame {
                 if (GameStates::eGameOver != _gameState) {
                     _gameState = GameStates::ePlaying;
                     bird->Tap();
+                    _wingSound.value().play();
                 }
             }
         }
@@ -91,6 +104,7 @@ namespace LukaGame {
             if (collision.CheckSpriteCollsion(birdHitbox, pipeSprite)) {
                 _gameState = GameStates::eGameOver;
                 _clock.restart();
+                _hitSound.value().play();
             }
         }
     }
@@ -103,6 +117,7 @@ namespace LukaGame {
             if (collision.CheckSpriteCollsion(birdHitbox, landSprite)) {
                 _gameState = GameStates::eGameOver;
                 _clock.restart();
+                _hitSound.value().play();
             }
         }
     }
@@ -116,6 +131,7 @@ namespace LukaGame {
                 _score++;
                 hud->UpdateScore(_score);
                 scoringPipes.erase(scoringPipes.begin() + i);
+                _pointSound.value().play();
             }
         }
     }

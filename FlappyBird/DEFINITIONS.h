@@ -41,6 +41,9 @@
 #define SILVER_MEDAL_FILEPATH "Silver-Medal.png"
 #define GOLD_MEDAL_FILEPATH "Gold-Medal.png"
 #define PLATINUM_MEDAL_FILEPATH "Platinum-Medal.png"
+#define HIT_SOUND_FILEPATH "Hit.wav"
+#define POINT_SOUND_FILEPATH "Point.wav"
+#define WING_SOUND_FILEPATH "Wing.wav"
 
 enum GameStates {
     eReady,
