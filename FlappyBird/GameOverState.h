@@ -24,5 +24,13 @@ namespace LukaGame {
             std::optional<sf::Text> _highScoreText;
             int _score;
             int _highScore;
+            void HandleSettingHighscore();
+            void SetScoreTextOptions();
+            void SetHighScoreTextOptions();
+            void SetContainerPosition();
+            void SetRetryButtonPosition();
+            void SetTitlePosition();
+            int GetContainerHeight();
+            int GetContainerYPosition();
     };
 }

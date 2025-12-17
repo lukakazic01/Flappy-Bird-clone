@@ -32,6 +32,7 @@
 #define FLAPPY_FONT_FILEPATH "FlappyFont.ttf"
 #define GAME_OVER_TITLE_FILEPATH "Game-Over-Title.png"
 #define GAME_OVER_BODY_FILEPATH "Game-Over-Body.png"
+#define HIGHSCORE_FILEPATH "Highscore.txt"
 
 enum GameStates {
     eReady,
