@@ -12,6 +12,10 @@ namespace LukaGame {
         _data->assets.LoadTexture("Game Over Background", GAME_BACKGROUND_FILEPATH);
         _data->assets.LoadTexture("Game Over Title", GAME_OVER_TITLE_FILEPATH);
         _data->assets.LoadTexture("Game Over Container", GAME_OVER_BODY_FILEPATH);
+        _data->assets.LoadTexture("Bronze Medal", BRONZE_MEDAL_FILEPATH);
+        _data->assets.LoadTexture("Silver Medal", SILVER_MEDAL_FILEPATH);
+        _data->assets.LoadTexture("Gold Medal", GOLD_MEDAL_FILEPATH);
+        _data->assets.LoadTexture("Platinum Medal", PLATINUM_MEDAL_FILEPATH);
         _background.emplace(_data->assets.GetTexture("Game Over Background"));
         _gameOverTitle.emplace(_data->assets.GetTexture("Game Over Title"));
         _gameOverContainer.emplace(_data->assets.GetTexture("Game Over Container"));
@@ -22,6 +26,7 @@ namespace LukaGame {
         SetContainerPosition();
         SetTitlePosition();
         SetRetryButtonPosition();
+        SetMedal();
     }
 
     void GameOverState::HandleInput() {
@@ -47,7 +52,25 @@ namespace LukaGame {
         _data->window.draw(*_retryButton);
         _data->window.draw(*_scoreText);
         _data->window.draw(*_highScoreText);
+        _data->window.draw(*_medal);
         _data->window.display();
+    }
+
+    void GameOverState::SetMedal() {
+
+        if (_score >= PLATINUM_MEDAL_SCORE) {
+            _medal.emplace(_data->assets.GetTexture("Platinum Medal"));
+        } else if (_score >= GOLD_MEDAL_SCORE) {
+            _medal.emplace(_data->assets.GetTexture("Gold Medal"));
+        } else if (_score >= SILVER_MEDAL_SCORE) {
+            _medal.emplace(_data->assets.GetTexture("Silver Medal"));
+        } else {
+            _medal.emplace(_data->assets.GetTexture("Bronze Medal"));
+        }
+        _medal.value().setPosition({
+            ((float)_data->window.getSize().x / 2 * 0.62f) - _medal.value().getGlobalBounds().size.x / 2,
+            (float)_data->window.getSize().y / 2 - (_medal.value().getGlobalBounds().size.y / 2) * 0.7f
+        });
     }
 
     void GameOverState::HandleSettingHighscore() {

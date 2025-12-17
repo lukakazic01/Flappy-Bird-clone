@@ -9,7 +9,6 @@ namespace LukaGame {
         public:
             GameOverState(GameDataRef, int score);
             ~GameOverState();
-            
             void Init();
             void HandleInput();
             void Update(float dt);
@@ -22,6 +21,7 @@ namespace LukaGame {
             std::optional<sf::Sprite> _retryButton;
             std::optional<sf::Text> _scoreText;
             std::optional<sf::Text> _highScoreText;
+            std::optional<sf::Sprite> _medal;
             int _score;
             int _highScore;
             void HandleSettingHighscore();
@@ -29,6 +29,7 @@ namespace LukaGame {
             void SetHighScoreTextOptions();
             void SetContainerPosition();
             void SetRetryButtonPosition();
+            void SetMedal();
             void SetTitlePosition();
             int GetContainerHeight();
             int GetContainerYPosition();

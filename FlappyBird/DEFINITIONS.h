@@ -15,6 +15,10 @@
 #define ROTATION_SPEED 200.0f
 #define FLASH_SPEED 1500.0f
 #define TIME_BEFORE_GAME_OVER_APPEARS 1.5f
+#define BRONZE_MEDAL_SCORE 0
+#define SILVER_MEDAL_SCORE 5
+#define GOLD_MEDAL_SCORE 25
+#define PLATINUM_MEDAL_SCORE 100
 
 #define SPLASH_SCENE_BACKGROUND_FILEPATH "Splash Background.png"
 #define MAIN_MENU_BACKGROUND_FILEPATH "sky.png"
@@ -33,6 +37,10 @@
 #define GAME_OVER_TITLE_FILEPATH "Game-Over-Title.png"
 #define GAME_OVER_BODY_FILEPATH "Game-Over-Body.png"
 #define HIGHSCORE_FILEPATH "Highscore.txt"
+#define BRONZE_MEDAL_FILEPATH "Bronze-Medal.png"
+#define SILVER_MEDAL_FILEPATH "Silver-Medal.png"
+#define GOLD_MEDAL_FILEPATH "Gold-Medal.png"
+#define PLATINUM_MEDAL_FILEPATH "Platinum-Medal.png"
 
 enum GameStates {
     eReady,
