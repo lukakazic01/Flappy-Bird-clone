@@ -17,5 +17,8 @@ namespace LukaGame {
         private:
             GameDataRef _data;
             std::optional<sf::Sprite> _background;
+            std::optional<sf::Sprite> _gameOverTitle;
+            std::optional<sf::Sprite> _gameOverContainer;
+            std::optional<sf::Sprite> _retryButton;
     };
 }

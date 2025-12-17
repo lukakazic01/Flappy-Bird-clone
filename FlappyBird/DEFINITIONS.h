@@ -14,6 +14,7 @@
 #define FLYING_DURATION 0.35f
 #define ROTATION_SPEED 200.0f
 #define FLASH_SPEED 1500.0f
+#define TIME_BEFORE_GAME_OVER_APPEARS 1.5f
 
 #define SPLASH_SCENE_BACKGROUND_FILEPATH "Splash Background.png"
 #define MAIN_MENU_BACKGROUND_FILEPATH "sky.png"
@@ -29,6 +30,8 @@
 #define BIRD_FRAME_3_FILEPATH "bird-03.png"
 #define BIRD_FRAME_4_FILEPATH "bird-04.png"
 #define FLAPPY_FONT_FILEPATH "FlappyFont.ttf"
+#define GAME_OVER_TITLE_FILEPATH "Game-Over-Title.png"
+#define GAME_OVER_BODY_FILEPATH "Game-Over-Body.png"
 
 enum GameStates {
     eReady,

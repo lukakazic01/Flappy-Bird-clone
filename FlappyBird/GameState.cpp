@@ -4,6 +4,7 @@
 #include "Pipe.h"
 #include "DEFINITIONS.h"
 #include "Collision.h"
+#include "GameOverState.h"
 
 namespace LukaGame {
     GameState::GameState(GameDataRef ref): _data(ref) {}
@@ -46,6 +47,9 @@ namespace LukaGame {
     void GameState::Update(float dt) {
         if (GameStates::eGameOver == _gameState) {
             flash->Show(dt);
+            if (_clock.getElapsedTime().asSeconds() > TIME_BEFORE_GAME_OVER_APPEARS) {
+                _data->machine.AddState(StateRef(new GameOverState(_data)), true);
+            }
         }
         if (GameStates::eGameOver != _gameState) {
             bird->Animate(dt);
@@ -86,6 +90,7 @@ namespace LukaGame {
             std::variant<sf::RectangleShape, sf::Sprite> pipeSprite = pipeSprites.at(i);
             if (collision.CheckSpriteCollsion(birdHitbox, pipeSprite)) {
                 _gameState = GameStates::eGameOver;
+                _clock.restart();
             }
         }
     }
@@ -97,6 +102,7 @@ namespace LukaGame {
             std::variant<sf::RectangleShape, sf::Sprite> landSprite = landSprites.at(i);
             if (collision.CheckSpriteCollsion(birdHitbox, landSprite)) {
                 _gameState = GameStates::eGameOver;
+                _clock.restart();
             }
         }
     }
