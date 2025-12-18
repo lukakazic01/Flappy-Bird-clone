@@ -26,6 +26,9 @@ namespace LukaGame {
         private:
             GameDataRef _data;
             std::optional<sf::Sprite> _background;
+            std::optional<sf::Sound> _hitSound;
+            std::optional<sf::Sound> _wingSound;
+            std::optional<sf::Sound> _pointSound;
             Pipe *pipe;
             Land *land;
             Bird *bird;
@@ -33,12 +36,7 @@ namespace LukaGame {
             Hud *hud;
             Collision collision;
             sf::Clock _clock;
-            sf::SoundBuffer _hitSoundBuffer;
-            sf::SoundBuffer _wingSoundBuffer;
-            sf::SoundBuffer _pointSoundBuffer;
-            std::optional<sf::Sound> _hitSound;
-            std::optional<sf::Sound> _wingSound;
-            std::optional<sf::Sound> _pointSound;
+            sf::Music _backgroundMusic;
             int _gameState;
             int _score;
     };

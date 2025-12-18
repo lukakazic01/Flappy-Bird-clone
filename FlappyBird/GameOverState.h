@@ -8,7 +8,7 @@ namespace LukaGame {
     class GameOverState : public State {
         public:
             GameOverState(GameDataRef, int score);
-            ~GameOverState();
+            ~GameOverState() {};
             void Init();
             void HandleInput();
             void Update(float dt);

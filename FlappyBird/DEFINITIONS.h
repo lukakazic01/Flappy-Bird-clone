@@ -14,6 +14,7 @@
 #define FLYING_DURATION 0.35f
 #define ROTATION_SPEED 200.0f
 #define FLASH_SPEED 1500.0f
+#define BACKGROUND_MUSIC_FADE_SPEED 100.0f
 #define TIME_BEFORE_GAME_OVER_APPEARS 1.5f
 #define BRONZE_MEDAL_SCORE 0
 #define SILVER_MEDAL_SCORE 5
@@ -44,6 +45,7 @@
 #define HIT_SOUND_FILEPATH "Hit.wav"
 #define POINT_SOUND_FILEPATH "Point.wav"
 #define WING_SOUND_FILEPATH "Wing.wav"
+#define BACKGROND_MUSIC_FILEPATH "Flying me softly.mp3"
 
 enum GameStates {
     eReady,

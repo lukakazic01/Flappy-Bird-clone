@@ -58,6 +58,7 @@
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = A1C1F64D2EDE395E00A3D8E0 /* Copy Files */;
 			membershipExceptions = (
+				"audio/Flying me softly.mp3",
 				audio/Hit.wav,
 				audio/Point.wav,
 				audio/Wing.wav,

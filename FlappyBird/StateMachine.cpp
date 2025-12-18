@@ -25,9 +25,9 @@ namespace LukaGame {
         if (_isAdding) {
             if (!_states.empty()) {
                 if (!_isReplacing) {
-                    _states.pop();
-                } else {
                     _states.top()->Pause();
+                } else {
+                    _states.pop();
                 }
             }
             _states.push(std::move(_newState));

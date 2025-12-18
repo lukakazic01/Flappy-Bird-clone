@@ -8,7 +8,7 @@ namespace LukaGame {
     class SplashState : public State {
         public:
             SplashState(GameDataRef);
-            ~SplashState();
+            ~SplashState() {};
             
             void Init();
             void HandleInput();

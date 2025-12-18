@@ -9,5 +9,6 @@ class State {
         virtual void Draw(float dt) = 0;
         virtual void Pause() {};
         virtual void Resume() {};
+        virtual ~State() = default;
     };
 }

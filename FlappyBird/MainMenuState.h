@@ -8,7 +8,7 @@ namespace LukaGame {
     class MainMenuState : public State {
         public:
             MainMenuState(GameDataRef);
-            ~MainMenuState();
+            ~MainMenuState() {};
             
             void Init();
             void HandleInput();

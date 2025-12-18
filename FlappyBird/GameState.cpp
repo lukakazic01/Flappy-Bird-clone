@@ -10,18 +10,10 @@ namespace LukaGame {
     GameState::GameState(GameDataRef ref): _data(ref) {}
 
     void GameState::Init() {
-        if (!_hitSoundBuffer.loadFromFile(HIT_SOUND_FILEPATH)) {
-            std::cout << "Error loading Hit sound effect" << std::endl;
-        }
-        if (!_wingSoundBuffer.loadFromFile(WING_SOUND_FILEPATH)) {
-            std::cout << "Error loading Wing sound effect" << std::endl;
-        }
-        if (!_pointSoundBuffer.loadFromFile(POINT_SOUND_FILEPATH)) {
-            std::cout << "Error loading Point sound effect" << std::endl;
-        }
-        _hitSound.emplace(_hitSoundBuffer);
-        _wingSound.emplace(_wingSoundBuffer);
-        _pointSound.emplace(_pointSoundBuffer);
+        _data->assets.LoadMusic("Background Music", BACKGROND_MUSIC_FILEPATH);
+        _data->assets.LoadSound("Hit Sound", HIT_SOUND_FILEPATH);
+        _data->assets.LoadSound("Wing Sound", WING_SOUND_FILEPATH);
+        _data->assets.LoadSound("Point Sound", POINT_SOUND_FILEPATH);
         _data->assets.LoadTexture("Land", LAND_FILEPATH);
         _data->assets.LoadTexture("Pipe Up", PIPE_UP_FILEPATH);
         _data->assets.LoadTexture("Pipe Down", PIPE_DOWN_FILEPATH);
@@ -32,13 +24,16 @@ namespace LukaGame {
         _data->assets.LoadTexture("Bird Frame 4", BIRD_FRAME_4_FILEPATH);
         _data->assets.LoadFont("Flappy Font", FLAPPY_FONT_FILEPATH);
         _background.emplace(_data->assets.GetTexture("Game Background"));
+        _hitSound.emplace(_data->assets.GetSound("Hit Sound"));
+        _wingSound.emplace(_data->assets.GetSound("Wing Sound"));
+        _pointSound.emplace(_data->assets.GetSound("Point Sound"));
+        _backgroundMusic = std::move(_data->assets.GetMusic("Background Music"));
         _gameState = GameStates::eReady;
         pipe = new Pipe(_data);
         land = new Land(_data);
         bird = new Bird(_data);
         flash = new Flash(_data);
         hud = new Hud(_data);
-        _score = 0;
         hud->UpdateScore(_score);
     }
 
@@ -52,6 +47,9 @@ namespace LukaGame {
                     _gameState = GameStates::ePlaying;
                     bird->Tap();
                     _wingSound.value().play();
+                    if(_backgroundMusic.getStatus() != sf::SoundSource::Status::Playing) {
+                        _backgroundMusic.play();
+                    }
                 }
             }
         }
@@ -60,6 +58,14 @@ namespace LukaGame {
     void GameState::Update(float dt) {
         if (GameStates::eGameOver == _gameState) {
             flash->Show(dt);
+            float volume = _backgroundMusic.getVolume();
+            volume -= BACKGROUND_MUSIC_FADE_SPEED * dt;
+            if (volume <= 0.f) {
+                _backgroundMusic.stop();
+                volume = 0.f;
+            }
+
+            _backgroundMusic.setVolume(volume);
             if (_clock.getElapsedTime().asSeconds() > TIME_BEFORE_GAME_OVER_APPEARS) {
                 _data->machine.AddState(StateRef(new GameOverState(_data, _score)), true);
             }
@@ -136,10 +142,5 @@ namespace LukaGame {
         }
     }
 
-    GameState::~GameState() {
-        delete pipe;
-        delete bird;
-        delete land;
-        delete flash;
-    }
+    GameState::~GameState() {}
 }
