@@ -1,5 +1,4 @@
 #include "Bird.h"
-#include <iostream>
 namespace LukaGame {
     Bird::Bird(GameDataRef data): _data(data) {
         _animationFrames[0] = _data->assets.GetTexture("Bird Frame 1");

@@ -1,6 +1,5 @@
 #include "Pipe.h"
 #include "DEFINITIONS.h"
-#include <iostream>
 #include <random>
 
 namespace LukaGame {

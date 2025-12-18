@@ -1,5 +1,5 @@
 #include "InputManager.h"
-#include <iostream>
+
 namespace LukaGame {
 
     bool InputManager::isSpriteClicked(sf::Sprite& object,  sf::Mouse::Button button, sf::RenderWindow& window) {

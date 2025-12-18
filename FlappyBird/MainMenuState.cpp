@@ -1,5 +1,4 @@
 #include <sstream>
-#include <iostream>
 #include "MainMenuState.h"
 #include "GameState.h"
 #include <SFML/Graphics.hpp>

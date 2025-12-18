@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <stack>
-
 #include "State.h"
 
 namespace LukaGame {

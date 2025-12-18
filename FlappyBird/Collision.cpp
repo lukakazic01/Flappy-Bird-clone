@@ -1,5 +1,4 @@
 #include "Collision.h"
-#include <iostream>
 namespace LukaGame {
     Collision::Collision() {};
     

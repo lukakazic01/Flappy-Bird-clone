@@ -1,5 +1,5 @@
 #include "Hitbox.h"
-#include <iostream>
+
 namespace LukaGame {
 
     Hitbox::Hitbox() {};

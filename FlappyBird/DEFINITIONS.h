@@ -51,4 +51,5 @@ enum GameStates {
     eReady,
     ePlaying,
     eGameOver,
+    ePaused,
 };

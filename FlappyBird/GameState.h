@@ -20,6 +20,7 @@ namespace LukaGame {
             void HandleInput();
             void Update(float dt);
             void Draw(float dt);
+            void Pause();
             void CheckCollisionWithLand();
             void CheckCollisionWithPipe();
             void CheckCollisionWithScoringPipe();
