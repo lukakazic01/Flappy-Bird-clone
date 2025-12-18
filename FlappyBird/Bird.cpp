@@ -13,12 +13,11 @@ namespace LukaGame {
         _birdSprite.value().setOrigin({ bounds.size.x / 2, bounds.size.y / 2 });
         float hitboxWidth = _birdSprite.value().getGlobalBounds().size.x;
         float hitboxHeight = _birdSprite.value().getGlobalBounds().size.y;
-        _birdHitbox.SetHitbox({ hitboxWidth, hitboxHeight }, { 0.3f, 0.7f });
+        _birdHitbox.SetHitbox({ hitboxWidth, hitboxHeight }, { 0.6f, 0.6f });
     }
 
     void Bird::Draw() {
         _data->window.draw(*_birdSprite);
-        _data->window.draw(_birdHitbox.GetHitbox());
     }
 
     void Bird::Animate(float dt) {

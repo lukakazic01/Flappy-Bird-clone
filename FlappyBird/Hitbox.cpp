@@ -13,7 +13,6 @@ namespace LukaGame {
     void Hitbox::UpdateHitbox(const sf::Sprite& s) {
         _hitbox.setOrigin(s.getOrigin());
         _hitbox.setPosition(s.getPosition());
-        _hitbox.setRotation(s.getRotation());
     }
 
     void Hitbox::SetHitbox(const sf::Vector2f& size, const sf::Vector2f& scale) {
