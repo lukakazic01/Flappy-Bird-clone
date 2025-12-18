@@ -142,5 +142,11 @@ namespace LukaGame {
         }
     }
 
-    GameState::~GameState() {}
+    GameState::~GameState() {
+        delete pipe;
+        delete land;
+        delete hud;
+        delete flash;
+        delete bird;
+    }
 }
