@@ -4,7 +4,7 @@
 #include "Collision.h"
 #include "GameOverState.h"
 #include "PausedState.h"
-#include <iostream>
+
 namespace LukaGame {
     GameState::GameState(GameDataRef ref): _data(ref) {}
 
