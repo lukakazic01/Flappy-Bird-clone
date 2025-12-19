@@ -66,9 +66,14 @@ namespace LukaGame {
                 }
             }
             if (_data->input.isSpriteClicked(*_pauseButton, sf::Mouse::Button::Left, _data->window)) {
-                _backgroundMusic.setVolume(20.0f);
-                _data->machine.AddState(StateRef(new PausedState(_data)), false);
+                SetPausedGameState();
             }
+            if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+                if (keyPressed->code == sf::Keyboard::Key::P) {
+                    SetPausedGameState();
+                }
+            }
+
         }
     }
 
@@ -162,6 +167,11 @@ namespace LukaGame {
 
     void GameState::SetPauseButtonPosition() {
         _pauseButton.value().setPosition({ 50.0f, 50.0f });
+    }
+
+    void GameState::SetPausedGameState() {
+        _backgroundMusic.setVolume(20.0f);
+        _data->machine.AddState(StateRef(new PausedState(_data)), false);
     }
 
     GameState::~GameState() {

@@ -26,6 +26,7 @@ namespace LukaGame {
             void CheckCollisionWithPipe();
             void CheckCollisionWithScoringPipe();
             void SetPauseButtonPosition();
+            void SetPausedGameState();
         private:
             GameDataRef _data;
             std::optional<sf::Sprite> _background;
