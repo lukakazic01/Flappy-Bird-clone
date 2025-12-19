@@ -11,7 +11,11 @@ namespace LukaGame {
             void Update(float dt);
             void HandleInput();
             void Draw(float dt);
+            void SetResumeButtonPosition();
         private:
             GameDataRef _data;
+            std::optional<sf::Sprite> _background;
+            std::optional<sf::Sprite> _resumeButton;
+            sf::Texture _backgroundTexture;
     };
 }

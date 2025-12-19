@@ -4,7 +4,7 @@
 #include "Collision.h"
 #include "GameOverState.h"
 #include "PausedState.h"
-
+#include <iostream>
 namespace LukaGame {
     GameState::GameState(GameDataRef ref): _data(ref) {}
 
@@ -14,6 +14,7 @@ namespace LukaGame {
         _data->assets.LoadSound("Wing Sound", WING_SOUND_FILEPATH);
         _data->assets.LoadSound("Point Sound", POINT_SOUND_FILEPATH);
         _data->assets.LoadTexture("Land", LAND_FILEPATH);
+        _data->assets.LoadTexture("Pause Button", PAUSE_BUTTON_FILEPATH);
         _data->assets.LoadTexture("Pipe Up", PIPE_UP_FILEPATH);
         _data->assets.LoadTexture("Pipe Down", PIPE_DOWN_FILEPATH);
         _data->assets.LoadTexture("Game Background", GAME_BACKGROUND_FILEPATH);
@@ -26,6 +27,7 @@ namespace LukaGame {
         _hitSound.emplace(_data->assets.GetSound("Hit Sound"));
         _wingSound.emplace(_data->assets.GetSound("Wing Sound"));
         _pointSound.emplace(_data->assets.GetSound("Point Sound"));
+        _pauseButton.emplace(_data->assets.GetTexture("Pause Button"));
         _backgroundMusic = std::move(_data->assets.GetMusic("Background Music"));
         _gameState = GameStates::eReady;
         pipe = new Pipe(_data);
@@ -34,10 +36,18 @@ namespace LukaGame {
         flash = new Flash(_data);
         hud = new Hud(_data);
         hud->UpdateScore(_score);
+        SetPauseButtonPosition();
     }
 
     void GameState::Pause() {
         _gameState = GameStates::ePaused;
+        _clock.stop();
+    }
+
+    void GameState::Resume() {
+        _gameState = GameStates::ePlaying;
+        _backgroundMusic.setVolume(100.0f);
+        _clock.start();
     }
 
     void GameState::HandleInput() {
@@ -55,16 +65,14 @@ namespace LukaGame {
                     }
                 }
             }
-            if (_data->input.isSpriteClicked(bird->GetSprite(), sf::Mouse::Button::Left, _data->window)) {
-                _data->machine.AddState(StateRef(new PausedState(_data)));
+            if (_data->input.isSpriteClicked(*_pauseButton, sf::Mouse::Button::Left, _data->window)) {
+                _backgroundMusic.setVolume(20.0f);
+                _data->machine.AddState(StateRef(new PausedState(_data)), false);
             }
         }
     }
 
     void GameState::Update(float dt) {
-        if (GameStates::ePaused == _gameState) {
-            _backgroundMusic.setVolume(50.0f);
-        }
         if (GameStates::eGameOver == _gameState) {
             flash->Show(dt);
             float volume = _backgroundMusic.getVolume();
@@ -107,6 +115,7 @@ namespace LukaGame {
         land->DrawLand();
         bird->Draw();
         hud->Draw();
+        _data->window.draw(*_pauseButton);
         if (GameStates::eGameOver == _gameState) flash->Draw();
         _data->window.display();
     }
@@ -149,6 +158,10 @@ namespace LukaGame {
                 _pointSound.value().play();
             }
         }
+    }
+
+    void GameState::SetPauseButtonPosition() {
+        _pauseButton.value().setPosition({ 50.0f, 50.0f });
     }
 
     GameState::~GameState() {

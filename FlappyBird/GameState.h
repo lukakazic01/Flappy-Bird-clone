@@ -21,12 +21,15 @@ namespace LukaGame {
             void Update(float dt);
             void Draw(float dt);
             void Pause();
+            void Resume();
             void CheckCollisionWithLand();
             void CheckCollisionWithPipe();
             void CheckCollisionWithScoringPipe();
+            void SetPauseButtonPosition();
         private:
             GameDataRef _data;
             std::optional<sf::Sprite> _background;
+            std::optional<sf::Sprite> _pauseButton;
             std::optional<sf::Sound> _hitSound;
             std::optional<sf::Sound> _wingSound;
             std::optional<sf::Sound> _pointSound;
