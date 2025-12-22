@@ -55,7 +55,8 @@ namespace LukaGame {
             if (event->is<sf::Event::Closed>()) {
                 _data->window.close();
             }
-            if (_data->input.isSpriteClicked(*_background, sf::Mouse::Button::Left, _data->window)) {
+            if (_data->input.isSpriteClicked(*_background, sf::Mouse::Button::Left, _data->window) ||
+                _data->input.isKeyPressed(sf::Keyboard::Key::Space, event)) {
                 if (GameStates::eGameOver != _gameState && GameStates::ePaused != _gameState) {
                     _gameState = GameStates::ePlaying;
                     bird->Tap();
@@ -65,15 +66,10 @@ namespace LukaGame {
                     }
                 }
             }
-            if (_data->input.isSpriteClicked(*_pauseButton, sf::Mouse::Button::Left, _data->window)) {
+            if (_data->input.isSpriteClicked(*_pauseButton, sf::Mouse::Button::Left, _data->window) || _data->input.isKeyPressed(sf::Keyboard::Key::P, event)) {
                 SetPausedGameState();
             }
-            if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-                if (keyPressed->code == sf::Keyboard::Key::P) {
-                    SetPausedGameState();
-                }
-            }
-
+            
         }
     }
 

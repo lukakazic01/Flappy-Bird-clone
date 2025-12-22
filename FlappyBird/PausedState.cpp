@@ -31,14 +31,8 @@ namespace LukaGame {
                 _data->window.close();
             }
             
-            if (_data->input.isSpriteClicked(*_resumeButton, sf::Mouse::Button::Left, _data->window)) {
+            if (_data->input.isSpriteClicked(*_resumeButton, sf::Mouse::Button::Left, _data->window) || _data->input.isKeyPressed(sf::Keyboard::Key::R, event)) {
                 _data->machine.RemoveState();
-            }
-            
-            if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-                if (keyPressed->code == sf::Keyboard::Key::R) {
-                    _data->machine.RemoveState();
-                }
             }
         }
     }

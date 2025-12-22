@@ -61,6 +61,7 @@
 				"audio/Flying me softly.mp3",
 				audio/Hit.wav,
 				audio/Point.wav,
+				audio/vecera.mp3,
 				audio/Wing.wav,
 				fonts/arial.ttf,
 				fonts/FlappyFont.ttf,

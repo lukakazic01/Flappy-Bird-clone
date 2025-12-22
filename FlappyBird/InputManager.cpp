@@ -13,6 +13,15 @@ namespace LukaGame {
         return false;
     };
 
+    bool InputManager::isKeyPressed(sf::Keyboard::Key key, const std::optional<sf::Event>& event) {
+        if(const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+            if (keyPressed->code == key) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     sf::Vector2i InputManager::GetMousePosition(sf::RenderWindow& window) {
         return sf::Mouse::getPosition(window);
     };
