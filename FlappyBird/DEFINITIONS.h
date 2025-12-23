@@ -48,6 +48,8 @@
 #define BACKGROND_MUSIC_FILEPATH "Flying me softly.mp3"
 #define PAUSE_BUTTON_FILEPATH "Pause-button.png"
 #define RESUME_BUTTON_FILEPATH "Resume-button.png"
+#define SKIN_TABLE_FILEPATH "skin-table.png"
+#define SKIN_TABLE_CONTAINER_FILEPATH "skin-table-container.png"
 
 enum GameStates {
     eReady,

@@ -1,6 +1,7 @@
 #include <sstream>
 #include "MainMenuState.h"
 #include "GameState.h"
+#include "SkinMenuState.h"
 #include <SFML/Graphics.hpp>
 #include "DEFINITIONS.h"
 
@@ -32,7 +33,7 @@ void MainMenuState::Init() {
                 _data->window.close();
             }
             if (_data->input.isSpriteClicked(*_playButton, sf::Mouse::Button::Left, _data->window)) {
-                _data->machine.AddState(StateRef(new GameState(_data)), true);
+                _data->machine.AddState(StateRef(new SkinMenuState(_data)), true);
             }
         }
     }
