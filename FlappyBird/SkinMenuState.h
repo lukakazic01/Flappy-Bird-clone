@@ -3,6 +3,8 @@
 #include "State.h"
 #include "Game.h"
 #include <SFML/Graphics.hpp>
+#include <map>
+#include <array>
 
 namespace LukaGame {
     class SkinMenuState : public State {
@@ -17,6 +19,13 @@ namespace LukaGame {
             GameDataRef _data;
             std::optional<sf::Sprite> _background;
             std::optional<sf::Sprite> _skinTable;
-            std::optional<sf::Sprite> _skinTableContainer;
+            std::unordered_map<
+                std::string,
+                std::array<std::optional<sf::Sprite>, 2>
+            > _skinTableContainers;
+            void SetSkinTablePosition();
+            void SetSkinTableContainers();
+            sf::Vector2f GetHalfOfSkinContainerSize();
+            sf::Vector2f GetCenterCoordsForContainer();
     };
 }

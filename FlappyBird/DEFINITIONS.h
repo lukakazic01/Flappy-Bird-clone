@@ -30,10 +30,6 @@
 #define PIPE_UP_FILEPATH "PipeDown.png"
 #define PIPE_DOWN_FILEPATH "PipeUp.png"
 #define LAND_FILEPATH "Land.png"
-#define BIRD_FRAME_1_FILEPATH "bird-01.png"
-#define BIRD_FRAME_2_FILEPATH "bird-02.png"
-#define BIRD_FRAME_3_FILEPATH "bird-03.png"
-#define BIRD_FRAME_4_FILEPATH "bird-04.png"
 #define FLAPPY_FONT_FILEPATH "FlappyFont.ttf"
 #define GAME_OVER_TITLE_FILEPATH "Game-Over-Title.png"
 #define GAME_OVER_BODY_FILEPATH "Game-Over-Body.png"
@@ -50,6 +46,27 @@
 #define RESUME_BUTTON_FILEPATH "Resume-button.png"
 #define SKIN_TABLE_FILEPATH "skin-table.png"
 #define SKIN_TABLE_CONTAINER_FILEPATH "skin-table-container.png"
+#define COSMETICS_BUTTON_FILEPATH "CosmeticsButton.png"
+
+#define BIRD_FRAME_1_FILEPATH "bird-01.png"
+#define BIRD_FRAME_2_FILEPATH "bird-02.png"
+#define BIRD_FRAME_3_FILEPATH "bird-03.png"
+#define BIRD_FRAME_4_FILEPATH "bird-04.png"
+
+#define BLUE_BIRD_FRAME_1_FILEPATH "bird-blue-01.png"
+#define BLUE_BIRD_FRAME_2_FILEPATH "bird-blue-02.png"
+#define BLUE_BIRD_FRAME_3_FILEPATH "bird-blue-03.png"
+#define BLUE_BIRD_FRAME_4_FILEPATH "bird-blue-04.png"
+
+#define ORANGE_BIRD_FRAME_1_FILEPATH "bird-orange-01.png"
+#define ORANGE_BIRD_FRAME_2_FILEPATH "bird-orange-02.png"
+#define ORANGE_BIRD_FRAME_3_FILEPATH "bird-orange-03.png"
+#define ORANGE_BIRD_FRAME_4_FILEPATH "bird-orange-04.png"
+
+#define RED_BIRD_FRAME_1_FILEPATH "bird-red-01.png"
+#define RED_BIRD_FRAME_2_FILEPATH "bird-red-02.png"
+#define RED_BIRD_FRAME_3_FILEPATH "bird-red-03.png"
+#define RED_BIRD_FRAME_4_FILEPATH "bird-red-04.png"
 
 enum GameStates {
     eReady,

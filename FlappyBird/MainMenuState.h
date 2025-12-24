@@ -19,5 +19,6 @@ namespace LukaGame {
             std::optional<sf::Sprite> _background;
             std::optional<sf::Sprite> _title;
             std::optional<sf::Sprite> _playButton;
+            std::optional<sf::Sprite> _cosmeticsButton;
     };
 }
