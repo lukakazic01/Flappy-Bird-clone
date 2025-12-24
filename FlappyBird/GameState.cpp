@@ -4,11 +4,13 @@
 #include "Collision.h"
 #include "GameOverState.h"
 #include "PausedState.h"
+#include <fstream>
 
 namespace LukaGame {
     GameState::GameState(GameDataRef ref): _data(ref) {}
 
     void GameState::Init() {
+        std::array<std::string, 4> birdFrames = GetSelectedBirdFrames();
         _data->assets.LoadMusic("Background Music", BACKGROND_MUSIC_FILEPATH);
         _data->assets.LoadSound("Hit Sound", HIT_SOUND_FILEPATH);
         _data->assets.LoadSound("Wing Sound", WING_SOUND_FILEPATH);
@@ -18,10 +20,10 @@ namespace LukaGame {
         _data->assets.LoadTexture("Pipe Up", PIPE_UP_FILEPATH);
         _data->assets.LoadTexture("Pipe Down", PIPE_DOWN_FILEPATH);
         _data->assets.LoadTexture("Game Background", GAME_BACKGROUND_FILEPATH);
-        _data->assets.LoadTexture("Bird Frame 1", BIRD_FRAME_1_FILEPATH);
-        _data->assets.LoadTexture("Bird Frame 2", BIRD_FRAME_2_FILEPATH);
-        _data->assets.LoadTexture("Bird Frame 3", BIRD_FRAME_3_FILEPATH);
-        _data->assets.LoadTexture("Bird Frame 4", BIRD_FRAME_4_FILEPATH);
+        _data->assets.LoadTexture("Bird Frame 1", birdFrames[0]);
+        _data->assets.LoadTexture("Bird Frame 2", birdFrames[1]);
+        _data->assets.LoadTexture("Bird Frame 3", birdFrames[2]);
+        _data->assets.LoadTexture("Bird Frame 4", birdFrames[3]);
         _data->assets.LoadFont("Flappy Font", FLAPPY_FONT_FILEPATH);
         _background.emplace(_data->assets.GetTexture("Game Background"));
         _hitSound.emplace(_data->assets.GetSound("Hit Sound"));
@@ -168,6 +170,23 @@ namespace LukaGame {
     void GameState::SetPausedGameState() {
         _backgroundMusic.setVolume(20.0f);
         _data->machine.AddState(StateRef(new PausedState(_data)), false);
+    }
+
+    std::array<std::string, 4> GameState::GetSelectedBirdFrames() {
+        std::ifstream file("Bird.txt");
+        std::string selectedBird;
+        if(file.is_open()) {
+            file >> selectedBird;
+        }
+        if (selectedBird == "Red") {
+            return { RED_BIRD_FRAME_1_FILEPATH, RED_BIRD_FRAME_2_FILEPATH, RED_BIRD_FRAME_3_FILEPATH, RED_BIRD_FRAME_4_FILEPATH };
+        } else if (selectedBird == "Blue") {
+            return { BLUE_BIRD_FRAME_1_FILEPATH, BLUE_BIRD_FRAME_2_FILEPATH, BLUE_BIRD_FRAME_3_FILEPATH, BLUE_BIRD_FRAME_4_FILEPATH };
+        } else if (selectedBird == "Orange") {
+            return { ORANGE_BIRD_FRAME_1_FILEPATH, ORANGE_BIRD_FRAME_2_FILEPATH, ORANGE_BIRD_FRAME_3_FILEPATH, ORANGE_BIRD_FRAME_4_FILEPATH };
+        } else {
+            return { BIRD_FRAME_1_FILEPATH, BIRD_FRAME_2_FILEPATH, BIRD_FRAME_3_FILEPATH, BIRD_FRAME_4_FILEPATH };
+        }
     }
 
     GameState::~GameState() {

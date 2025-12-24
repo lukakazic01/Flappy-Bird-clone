@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <array>
 #include "State.h"
 #include "Game.h"
 #include "Pipe.h"
@@ -27,6 +28,7 @@ namespace LukaGame {
             void CheckCollisionWithScoringPipe();
             void SetPauseButtonPosition();
             void SetPausedGameState();
+            std::array<std::string, 4> GetSelectedBirdFrames();
         private:
             GameDataRef _data;
             std::optional<sf::Sprite> _background;
