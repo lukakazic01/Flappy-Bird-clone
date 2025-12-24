@@ -25,6 +25,7 @@ namespace LukaGame {
             > _skinTableContainers;
             void SetSkinTablePosition();
             void SetSkinTableContainers();
+            void writeBirdToFile(std::string name);
             sf::Vector2f GetHalfOfSkinContainerSize();
             sf::Vector2f GetCenterCoordsForContainer();
     };

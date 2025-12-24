@@ -1,6 +1,7 @@
 #include "SkinMenuState.h"
 #include "DEFINITIONS.h"
-
+#include <fstream>
+#include <iostream>
 namespace LukaGame {
     SkinMenuState::SkinMenuState(GameDataRef data): _data(data) {};
 
@@ -32,9 +33,28 @@ namespace LukaGame {
             if (event->is<sf::Event::Closed>()) {
                 _data->window.close();
             }
+            if (_data->input.isSpriteClicked(*_skinTableContainers["Classic Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
+                writeBirdToFile("Classic");
+            }
+            if (_data->input.isSpriteClicked(*_skinTableContainers["Blue Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
+                writeBirdToFile("Blue");
+            }
+            if (_data->input.isSpriteClicked(*_skinTableContainers["Orange Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
+                writeBirdToFile("Orange");
+            }
+            if (_data->input.isSpriteClicked(*_skinTableContainers["Red Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
+                writeBirdToFile("Red");
+            }
         }
     };
 
+    void SkinMenuState::writeBirdToFile(std::string value) {
+        std::ofstream file("Bird.txt");
+        if (file.is_open()) {
+            file << value;
+            file.close();
+        }
+    }
 
     void SkinMenuState::HandleInput() {
         
