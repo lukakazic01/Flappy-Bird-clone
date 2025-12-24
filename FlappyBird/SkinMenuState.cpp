@@ -1,7 +1,7 @@
 #include "SkinMenuState.h"
 #include "DEFINITIONS.h"
 #include <fstream>
-#include <iostream>
+
 namespace LukaGame {
     SkinMenuState::SkinMenuState(GameDataRef data): _data(data) {};
 
