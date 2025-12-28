@@ -25,7 +25,6 @@ namespace LukaGame {
         sf::Sprite redBird(_data->assets.GetTexture("Red Bird"));
         sf::Sprite orangeBird(_data->assets.GetTexture("Orange Bird"));
         _highScore = GetHighScore();
-        std::cout << _highScore << std::endl;
         _skinTableContainers["Classic"] = SkinData{
             sf::Sprite(_data->assets.GetTexture("Skin Table Container")),
             sf::Sprite(_data->assets.GetTexture("Classic Bird")),
