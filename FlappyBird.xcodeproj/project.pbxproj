@@ -91,6 +91,7 @@
 				"res/Home-button.png",
 				res/InvisibleScoringPipe.png,
 				res/land.png,
+				res/lock.jpg,
 				"res/Pause-button.png",
 				res/PipeDown.png,
 				res/PipeUp.png,

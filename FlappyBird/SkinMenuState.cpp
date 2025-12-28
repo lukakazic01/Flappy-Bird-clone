@@ -2,7 +2,6 @@
 #include "MainMenuState.h"
 #include "DEFINITIONS.h"
 #include <fstream>
-#include <iostream>
 
 namespace LukaGame {
     SkinMenuState::SkinMenuState(GameDataRef data): _data(data) {};
@@ -15,19 +14,45 @@ namespace LukaGame {
         _data->assets.LoadTexture("Orange Bird", ORANGE_BIRD_FRAME_1_FILEPATH);
         _data->assets.LoadTexture("Red Bird", RED_BIRD_FRAME_1_FILEPATH);
         _data->assets.LoadTexture("Home Button", HOME_BUTTON_FILEPATH);
+        _data->assets.LoadTexture("Lock", LOCK_FILEPATH);
         _homeButton.emplace(_data->assets.GetTexture("Home Button"));
         _background.emplace(_data->assets.GetTexture("Splash State Background"));
         _skinTable.emplace(_data->assets.GetTexture("Skin Table"));
-        sf::Sprite sprite(_data->assets.GetTexture("Skin Table Container"));
+        sf::Sprite skinTableContainer(_data->assets.GetTexture("Skin Table Container"));
+        sf::Sprite lock(_data->assets.GetTexture("Lock"));
         sf::Sprite classicBird(_data->assets.GetTexture("Classic Bird"));
         sf::Sprite blueBird(_data->assets.GetTexture("Blue Bird"));
         sf::Sprite redBird(_data->assets.GetTexture("Red Bird"));
         sf::Sprite orangeBird(_data->assets.GetTexture("Orange Bird"));
-        
-        _skinTableContainers.emplace("Classic Bird data", std::array<std::optional<sf::Sprite>, 2>{ sprite, classicBird });
-        _skinTableContainers.emplace("Blue Bird data", std::array<std::optional<sf::Sprite>, 2>{ sprite, blueBird });
-        _skinTableContainers.emplace("Orange Bird data", std::array<std::optional<sf::Sprite>, 2>{ sprite, orangeBird });
-        _skinTableContainers.emplace("Red Bird data", std::array<std::optional<sf::Sprite>, 2>{ sprite, redBird });
+        _highScore = GetHighScore();
+        std::cout << _highScore << std::endl;
+        _skinTableContainers["Classic"] = SkinData{
+            sf::Sprite(_data->assets.GetTexture("Skin Table Container")),
+            sf::Sprite(_data->assets.GetTexture("Classic Bird")),
+            sf::Sprite(_data->assets.GetTexture("Lock")),
+            0
+        };
+
+        _skinTableContainers["Blue"] = SkinData{
+            sf::Sprite(_data->assets.GetTexture("Skin Table Container")),
+            sf::Sprite(_data->assets.GetTexture("Blue Bird")),
+            sf::Sprite(_data->assets.GetTexture("Lock")),
+            BLUE_BIRD_UNLOCK_QUOTA
+        };
+
+        _skinTableContainers["Orange"] = SkinData{
+            sf::Sprite(_data->assets.GetTexture("Skin Table Container")),
+            sf::Sprite(_data->assets.GetTexture("Orange Bird")),
+            sf::Sprite(_data->assets.GetTexture("Lock")),
+            ORANGE_BIRD_UNLOCK_QUOTA
+        };
+
+        _skinTableContainers["Red"] = SkinData{
+            sf::Sprite(_data->assets.GetTexture("Skin Table Container")),
+            sf::Sprite(_data->assets.GetTexture("Red Bird")),
+            sf::Sprite(_data->assets.GetTexture("Lock")),
+            RED_BIRD_UNLOCK_QUOTA
+        };
         SetSkinTablePosition();
         SetSkinTableContainers();
         SetHomeButtonPosition();
@@ -42,22 +67,14 @@ namespace LukaGame {
             if (event->is<sf::Event::Closed>()) {
                 _data->window.close();
             }
-            if (_data->input.isSpriteClicked(*_skinTableContainers["Classic Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
-                WriteBirdToFile("Classic");
-                SetBorderForSelectedBird(*_skinTableContainers["Classic Bird data"][0]);
-            }
-            if (_data->input.isSpriteClicked(*_skinTableContainers["Blue Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
-                WriteBirdToFile("Blue");
-                SetBorderForSelectedBird(*_skinTableContainers["Blue Bird data"][0]);
-            }
-            if (_data->input.isSpriteClicked(*_skinTableContainers["Orange Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
-                WriteBirdToFile("Orange");
-                SetBorderForSelectedBird(*_skinTableContainers["Orange Bird data"][0]);
-            }
-            if (_data->input.isSpriteClicked(*_skinTableContainers["Red Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
-                WriteBirdToFile("Red");
-                SetBorderForSelectedBird(*_skinTableContainers["Red Bird data"][0]);
-            }
+            for (auto& [key, skin] : _skinTableContainers) {
+               if (_data->input.isSpriteClicked(*skin.containerSprite, sf::Mouse::Button::Left, _data->window)) {
+                   if (_highScore >= skin.unlockScore) {
+                       WriteBirdToFile(key);
+                       SetBorderForSelectedBird(*skin.containerSprite);
+                   }
+               }
+           }
             if (_data->input.isSpriteClicked(*_homeButton, sf::Mouse::Button::Left, _data->window)) {
                 _data->machine.AddState(StateRef(new MainMenuState(_data)), true);
             }
@@ -65,25 +82,27 @@ namespace LukaGame {
     };
 
     void SkinMenuState::Draw(float dt) {
-        auto& [classicBirdContainer, classicBirdSprite] = _skinTableContainers["Classic Bird data"];
-        auto& [blueBirdContainer, blueBirdSprite] = _skinTableContainers["Blue Bird data"];
-        auto& [orangeBirdContainer, orangeBirdSprite] = _skinTableContainers["Orange Bird data"];
-        auto& [redBirdContainer, redBirdSprite] = _skinTableContainers["Red Bird data"];
         _data->window.clear();
         _data->window.draw(*_background);
         _data->window.draw(*_skinTable);
         _data->window.draw(*_homeButton);
-        _data->window.draw(*classicBirdContainer);
-        _data->window.draw(*classicBirdSprite);
-        _data->window.draw(*blueBirdContainer);
-        _data->window.draw(*blueBirdSprite);
-        _data->window.draw(*orangeBirdContainer);
-        _data->window.draw(*orangeBirdSprite);
-        _data->window.draw(*redBirdContainer);
-        _data->window.draw(*redBirdSprite);
+        for (auto& [key, skin] : _skinTableContainers) {
+            _data->window.draw(*skin.containerSprite);
+            _data->window.draw(*skin.birdSprite);
+            if (skin.unlockScore >= _highScore) {
+                _data->window.draw(*skin.lockSprite);
+            }
+       }
         _data->window.draw(_selectedBirdBorder);
         _data->window.display();
     };
+    
+    int SkinMenuState::GetHighScore(){
+        std::ifstream file("Highscore.txt");
+        int highScore;
+        file >> highScore;
+        return highScore;
+    }
 
     void SkinMenuState::SetBorderForSelectedBird(sf::Sprite& birdContainerSprite) {
         _selectedBirdBorder.setSize(birdContainerSprite.getGlobalBounds().size);
@@ -106,9 +125,7 @@ namespace LukaGame {
         if (file.is_open()) {
             std::string selectedBird;
             file >> selectedBird;
-            selectedBird += " Bird data";
-            std::cout << selectedBird << std::endl;
-            SetBorderForSelectedBird(*_skinTableContainers[selectedBird][0]);
+            SetBorderForSelectedBird(*_skinTableContainers[selectedBird].containerSprite);
             file.close();
         }
     }
@@ -124,11 +141,11 @@ namespace LukaGame {
     }
 
     void SkinMenuState::SetSkinTableContainers() {
-        auto& [classicBirdContainer, classicBirdSprite] = _skinTableContainers["Classic Bird data"];
-        auto& [blueBirdContainer, blueBirdSprite] = _skinTableContainers["Blue Bird data"];
-        auto& [orangeBirdContainer, orangeBirdSprite] = _skinTableContainers["Orange Bird data"];
-        auto& [redBirdContainer, redBirdSprite] = _skinTableContainers["Red Bird data"];
-        
+        auto [classicBirdContainer, classicBirdSprite, classicBirdLock] = _skinTableContainers["Classic"].asTuple();
+        auto [blueBirdContainer, blueBirdSprite, blueBirdLock] = _skinTableContainers["Blue"].asTuple();
+        auto [orangeBirdContainer, orangeBirdSprite, orangeBirdLock] = _skinTableContainers["Orange"].asTuple();
+        auto [redBirdContainer, redBirdSprite, redBirdLock] = _skinTableContainers["Red"].asTuple();
+
         auto&& [centerX, centerY] = GetCenterCoordsForContainer();
         float tableHeight = _skinTable.value().getGlobalBounds().size.y;
         float tableWidth = _skinTable.value().getGlobalBounds().size.x;
@@ -147,17 +164,22 @@ namespace LukaGame {
         
         (*classicBirdContainer).setPosition({ upperX, upperY });
         (*blueBirdContainer).setPosition({ lowerX, upperY });
-        (*orangeBirdContainer).setPosition({ lowerX, lowerY });
-        (*redBirdContainer).setPosition({ upperX, lowerY });
+        (*orangeBirdContainer).setPosition({ upperX, lowerY });
+        (*redBirdContainer).setPosition({ lowerX, lowerY });
+        
+        (*classicBirdLock).setPosition((*classicBirdContainer).getGlobalBounds().position);
+        (*blueBirdLock).setPosition((*blueBirdContainer).getGlobalBounds().position);
+        (*orangeBirdLock).setPosition((*orangeBirdContainer).getGlobalBounds().position);
+        (*redBirdLock).setPosition((*redBirdContainer).getGlobalBounds().position);
         
         (*classicBirdSprite).setPosition({ upperX + halfX - halfWidthClassicBird, upperY + halfY - halfHeightClassicBird});
         (*blueBirdSprite).setPosition({ lowerX + halfX - halfWidthOtherSkin, upperY + halfY - halfHeightOtherSkin });
-        (*orangeBirdSprite).setPosition({ lowerX + halfX - halfWidthOtherSkin, lowerY + halfY - halfHeightOtherSkin });
-        (*redBirdSprite).setPosition({ upperX + halfX - halfWidthOtherSkin, lowerY + halfY - halfHeightOtherSkin });
+        (*orangeBirdSprite).setPosition({ upperX + halfX - halfWidthOtherSkin, lowerY + halfY - halfHeightOtherSkin });
+        (*redBirdSprite).setPosition({ lowerX + halfX - halfWidthOtherSkin, lowerY + halfY - halfHeightOtherSkin });
     }
     
     sf::Vector2f SkinMenuState::GetCenterCoordsForContainer() {
-        sf::Sprite& classicBirdContainer = _skinTableContainers["Classic Bird data"][0].value();
+        sf::Sprite& classicBirdContainer = _skinTableContainers["Classic"].containerSprite.value();
         float centerX = _data->window.getSize().x / 2;
         float centerY = _data->window.getSize().y / 2;
         float skinContainerWidth = classicBirdContainer.getGlobalBounds().size.x;
@@ -166,7 +188,7 @@ namespace LukaGame {
     }
 
     sf::Vector2f SkinMenuState::GetHalfOfSkinContainerSize() {
-        sf::Sprite skinContainer = _skinTableContainers["Classic Bird data"][0].value();
+        sf::Sprite skinContainer = _skinTableContainers["Classic"].containerSprite.value();
         return { skinContainer.getGlobalBounds().size.x / 2, skinContainer.getGlobalBounds().size.y / 2 };
     }
 

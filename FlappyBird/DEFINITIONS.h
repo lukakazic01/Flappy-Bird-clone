@@ -20,6 +20,9 @@
 #define SILVER_MEDAL_SCORE 5
 #define GOLD_MEDAL_SCORE 25
 #define PLATINUM_MEDAL_SCORE 100
+#define BLUE_BIRD_UNLOCK_QUOTA 50
+#define ORANGE_BIRD_UNLOCK_QUOTA 150
+#define RED_BIRD_UNLOCK_QUOTA 500
 
 #define SPLASH_SCENE_BACKGROUND_FILEPATH "Splash Background.png"
 #define MAIN_MENU_BACKGROUND_FILEPATH "sky.png"
@@ -48,6 +51,7 @@
 #define SKIN_TABLE_CONTAINER_FILEPATH "skin-table-container.png"
 #define COSMETICS_BUTTON_FILEPATH "CosmeticsButton.png"
 #define HOME_BUTTON_FILEPATH "Home-button.png"
+#define LOCK_FILEPATH "lock.jpg"
 
 #define BIRD_FRAME_1_FILEPATH "bird-01.png"
 #define BIRD_FRAME_2_FILEPATH "bird-02.png"
