@@ -47,6 +47,7 @@
 #define SKIN_TABLE_FILEPATH "skin-table.png"
 #define SKIN_TABLE_CONTAINER_FILEPATH "skin-table-container.png"
 #define COSMETICS_BUTTON_FILEPATH "CosmeticsButton.png"
+#define HOME_BUTTON_FILEPATH "Home-button.png"
 
 #define BIRD_FRAME_1_FILEPATH "bird-01.png"
 #define BIRD_FRAME_2_FILEPATH "bird-02.png"

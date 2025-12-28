@@ -88,6 +88,7 @@
 				"res/Game-Over-Body.png",
 				"res/Game-Over-Title.png",
 				"res/Gold-Medal.png",
+				"res/Home-button.png",
 				res/InvisibleScoringPipe.png,
 				res/land.png,
 				"res/Pause-button.png",

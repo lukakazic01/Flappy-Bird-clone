@@ -1,4 +1,5 @@
 #include "SkinMenuState.h"
+#include "MainMenuState.h"
 #include "DEFINITIONS.h"
 #include <fstream>
 
@@ -12,6 +13,8 @@ namespace LukaGame {
         _data->assets.LoadTexture("Blue Bird", BLUE_BIRD_FRAME_1_FILEPATH);
         _data->assets.LoadTexture("Orange Bird", ORANGE_BIRD_FRAME_1_FILEPATH);
         _data->assets.LoadTexture("Red Bird", RED_BIRD_FRAME_1_FILEPATH);
+        _data->assets.LoadTexture("Home Button", HOME_BUTTON_FILEPATH);
+        _homeButton.emplace(_data->assets.GetTexture("Home Button"));
         _background.emplace(_data->assets.GetTexture("Splash State Background"));
         _skinTable.emplace(_data->assets.GetTexture("Skin Table"));
         sf::Sprite sprite(_data->assets.GetTexture("Skin Table Container"));
@@ -26,6 +29,7 @@ namespace LukaGame {
         _skinTableContainers.emplace("Red Bird data", std::array<std::optional<sf::Sprite>, 2>{ sprite, redBird });
         SetSkinTablePosition();
         SetSkinTableContainers();
+        SetHomeButtonPosition();
     };
 
     void SkinMenuState::Update(float dt) {
@@ -44,6 +48,9 @@ namespace LukaGame {
             }
             if (_data->input.isSpriteClicked(*_skinTableContainers["Red Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
                 writeBirdToFile("Red");
+            }
+            if (_data->input.isSpriteClicked(*_homeButton, sf::Mouse::Button::Left, _data->window)) {
+                _data->machine.AddState(StateRef(new MainMenuState(_data)), true);
             }
         }
     };
@@ -68,6 +75,7 @@ namespace LukaGame {
         _data->window.clear();
         _data->window.draw(*_background);
         _data->window.draw(*_skinTable);
+        _data->window.draw(*_homeButton);
         _data->window.draw(*classicBirdContainer);
         _data->window.draw(*classicBirdSprite);
         _data->window.draw(*blueBirdContainer);
@@ -78,6 +86,10 @@ namespace LukaGame {
         _data->window.draw(*redBirdSprite);
         _data->window.display();
     };
+
+    void SkinMenuState::SetHomeButtonPosition() {
+        _homeButton.value().setPosition({ 50.0f, 50.0f });
+    }
 
     void SkinMenuState::SetSkinTablePosition() {
         float x = _data->window.getSize().x / 2 - _skinTable.value().getGlobalBounds().size.x / 2;

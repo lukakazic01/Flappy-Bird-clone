@@ -23,9 +23,11 @@ namespace LukaGame {
                 std::string,
                 std::array<std::optional<sf::Sprite>, 2>
             > _skinTableContainers;
+            std::optional<sf::Sprite> _homeButton;
             void SetSkinTablePosition();
             void SetSkinTableContainers();
             void writeBirdToFile(std::string name);
+            void SetHomeButtonPosition();
             sf::Vector2f GetHalfOfSkinContainerSize();
             sf::Vector2f GetCenterCoordsForContainer();
     };
