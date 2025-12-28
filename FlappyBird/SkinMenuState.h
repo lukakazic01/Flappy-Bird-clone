@@ -19,6 +19,7 @@ namespace LukaGame {
             GameDataRef _data;
             std::optional<sf::Sprite> _background;
             std::optional<sf::Sprite> _skinTable;
+            sf::RectangleShape _selectedBirdBorder;
             std::unordered_map<
                 std::string,
                 std::array<std::optional<sf::Sprite>, 2>
@@ -26,8 +27,10 @@ namespace LukaGame {
             std::optional<sf::Sprite> _homeButton;
             void SetSkinTablePosition();
             void SetSkinTableContainers();
-            void writeBirdToFile(std::string name);
+            void WriteBirdToFile(std::string name);
+            void ReadBirdFile();
             void SetHomeButtonPosition();
+            void SetBorderForSelectedBird(sf::Sprite& sprite);
             sf::Vector2f GetHalfOfSkinContainerSize();
             sf::Vector2f GetCenterCoordsForContainer();
     };

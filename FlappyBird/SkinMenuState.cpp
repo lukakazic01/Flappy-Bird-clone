@@ -2,6 +2,7 @@
 #include "MainMenuState.h"
 #include "DEFINITIONS.h"
 #include <fstream>
+#include <iostream>
 
 namespace LukaGame {
     SkinMenuState::SkinMenuState(GameDataRef data): _data(data) {};
@@ -30,41 +31,37 @@ namespace LukaGame {
         SetSkinTablePosition();
         SetSkinTableContainers();
         SetHomeButtonPosition();
+        ReadBirdFile();
     };
 
     void SkinMenuState::Update(float dt) {
+    };
+
+    void SkinMenuState::HandleInput() {
         while(const std::optional event = _data->window.pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
                 _data->window.close();
             }
             if (_data->input.isSpriteClicked(*_skinTableContainers["Classic Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
-                writeBirdToFile("Classic");
+                WriteBirdToFile("Classic");
+                SetBorderForSelectedBird(*_skinTableContainers["Classic Bird data"][0]);
             }
             if (_data->input.isSpriteClicked(*_skinTableContainers["Blue Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
-                writeBirdToFile("Blue");
+                WriteBirdToFile("Blue");
+                SetBorderForSelectedBird(*_skinTableContainers["Blue Bird data"][0]);
             }
             if (_data->input.isSpriteClicked(*_skinTableContainers["Orange Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
-                writeBirdToFile("Orange");
+                WriteBirdToFile("Orange");
+                SetBorderForSelectedBird(*_skinTableContainers["Orange Bird data"][0]);
             }
             if (_data->input.isSpriteClicked(*_skinTableContainers["Red Bird data"][0], sf::Mouse::Button::Left, _data->window)) {
-                writeBirdToFile("Red");
+                WriteBirdToFile("Red");
+                SetBorderForSelectedBird(*_skinTableContainers["Red Bird data"][0]);
             }
             if (_data->input.isSpriteClicked(*_homeButton, sf::Mouse::Button::Left, _data->window)) {
                 _data->machine.AddState(StateRef(new MainMenuState(_data)), true);
             }
         }
-    };
-
-    void SkinMenuState::writeBirdToFile(std::string value) {
-        std::ofstream file("Bird.txt");
-        if (file.is_open()) {
-            file << value;
-            file.close();
-        }
-    }
-
-    void SkinMenuState::HandleInput() {
-        
     };
 
     void SkinMenuState::Draw(float dt) {
@@ -84,8 +81,37 @@ namespace LukaGame {
         _data->window.draw(*orangeBirdSprite);
         _data->window.draw(*redBirdContainer);
         _data->window.draw(*redBirdSprite);
+        _data->window.draw(_selectedBirdBorder);
         _data->window.display();
     };
+
+    void SkinMenuState::SetBorderForSelectedBird(sf::Sprite& birdContainerSprite) {
+        _selectedBirdBorder.setSize(birdContainerSprite.getGlobalBounds().size);
+        _selectedBirdBorder.setPosition(birdContainerSprite.getGlobalBounds().position);
+        _selectedBirdBorder.setFillColor(sf::Color::Transparent);
+        _selectedBirdBorder.setOutlineColor(sf::Color::Yellow);
+        _selectedBirdBorder.setOutlineThickness(5.0f);
+    }
+
+    void SkinMenuState::WriteBirdToFile(std::string value) {
+        std::ofstream file("Bird.txt");
+        if (file.is_open()) {
+            file << value;
+            file.close();
+        }
+    }
+
+    void SkinMenuState::ReadBirdFile() {
+        std::ifstream file("Bird.txt");
+        if (file.is_open()) {
+            std::string selectedBird;
+            file >> selectedBird;
+            selectedBird += " Bird data";
+            std::cout << selectedBird << std::endl;
+            SetBorderForSelectedBird(*_skinTableContainers[selectedBird][0]);
+            file.close();
+        }
+    }
 
     void SkinMenuState::SetHomeButtonPosition() {
         _homeButton.value().setPosition({ 50.0f, 50.0f });
